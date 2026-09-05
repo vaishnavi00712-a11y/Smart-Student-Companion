@@ -12,7 +12,9 @@ import {
   Layers,
   ArrowRight,
   Globe,
-  AlertTriangle
+  AlertTriangle,
+  FolderCheck,
+  Rocket
 } from 'lucide-react';
 
 export const DeploymentGuideView: React.FC = () => {
@@ -23,27 +25,6 @@ export const DeploymentGuideView: React.FC = () => {
     setCopiedIndex(id);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
-
-  const githubPagesSteps = [
-    {
-      step: "Root Cause Solved",
-      title: "Why GitHub Pages shows a blank white page",
-      desc: "By default, Vite compiles asset paths with an absolute root slash (/assets/index.js). GitHub Pages hosts repositories in a subfolder (https://<username>.github.io/<repo-name>/), causing the browser to search for assets at the domain root, triggering 404 Not Found errors. We fixed this by adding `base: './'` to `vite.config.ts` so all assets use relative paths.",
-      status: "Fixed in codebase"
-    },
-    {
-      step: "Option A: 1-Click Automated",
-      title: "GitHub Actions Workflow (.github/workflows/deploy.yml)",
-      desc: "We added a GitHub Actions deployment workflow. In your GitHub repository: Go to Settings -> Pages -> Under 'Build and deployment' -> Set Source to 'GitHub Actions'. Pushing your code will automatically build and publish the site!",
-      command: "git add .\ngit commit -m \"Deploy to GitHub Pages with relative base path\"\ngit push origin main"
-    },
-    {
-      step: "Option B: Manual gh-pages Branch",
-      title: "Build & Deploy using the gh-pages CLI tool",
-      desc: "If you prefer deploying the built dist/ folder directly to a gh-pages branch:",
-      command: "npm run build\nnpx gh-pages -d dist"
-    }
-  ];
 
   const windowsSteps = [
     {
@@ -113,11 +94,11 @@ export const DeploymentGuideView: React.FC = () => {
               <span className="px-2 py-0.5 rounded text-[11px] font-bold uppercase bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
                 Setup & Deployment
               </span>
-              <span className="text-xs text-slate-500 font-mono">Windows 11/10 • GitHub Pages • Render PaaS</span>
+              <span className="text-xs text-slate-500 font-mono">GitHub Pages • Windows 11/10 • Render Cloud</span>
             </div>
-            <h2 className="text-base font-bold text-white">Production Deployment & GitHub Pages Guide</h2>
+            <h2 className="text-base font-bold text-white">GitHub Pages Deployment & Blank Screen Troubleshooting</h2>
             <p className="text-xs text-slate-400 mt-1">
-              Instructions for deploying the frontend to GitHub Pages (blank screen issue resolved), running the FastAPI backend locally on Windows, and deploying to Render.com.
+              Everything you need to successfully host your frontend on GitHub Pages, run your Python FastAPI backend on Windows, and deploy to Render.
             </p>
           </div>
 
@@ -130,71 +111,96 @@ export const DeploymentGuideView: React.FC = () => {
         </div>
       </div>
 
-      {/* GitHub Pages Blank Screen Fix Banner */}
-      <div className="bg-[#1A1D23] border border-emerald-500/30 rounded-xl p-5 shadow-sm">
+      {/* GitHub Pages Blank Screen Root Cause & Instant Fixes */}
+      <div className="bg-[#1A1D23] border border-indigo-500/40 rounded-xl p-5 shadow-sm space-y-4">
         <div className="flex items-start gap-3">
-          <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
-            <CheckCircle2 className="w-5 h-5" />
+          <div className="p-2 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 shrink-0 mt-0.5">
+            <Globe className="w-5 h-5" />
           </div>
-          <div className="flex-1 space-y-3">
+          <div className="flex-1">
+            <h3 className="text-sm font-bold text-white">Why Did GitHub Pages Show a Blank White Screen?</h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              GitHub Pages is a <strong>static HTML file host</strong>. When you select <code className="text-indigo-300 font-mono">Branch: main, Folder: / (root)</code>, GitHub Pages serves the root <code className="text-indigo-300 font-mono">index.html</code> which references <code className="text-indigo-300 font-mono">/src/main.tsx</code>. Because browsers cannot parse raw TypeScript files directly, the browser throws an error and shows a blank white page.
+            </p>
+            <p className="text-xs text-emerald-400 mt-1.5 font-medium">
+              We have generated the compiled production build into the <code className="font-mono bg-[#111419] px-1.5 py-0.5 rounded border border-[#2D3139]">/docs</code> folder with relative asset paths (<code className="font-mono">base: &apos;./&apos;</code>), <code className="font-mono">.nojekyll</code>, and <code className="font-mono">404.html</code>!
+            </p>
+          </div>
+        </div>
+
+        {/* 3 Simple Options to Deploy */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          {/* Option 1: /docs folder */}
+          <div className="bg-[#111419] border border-emerald-500/30 rounded-xl p-4 flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white">GitHub Pages Blank White Page Issue Fixed</h3>
-                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Resolved
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Option 1 (Easiest)
                 </span>
+                <span className="text-xs font-bold text-white">The /docs Folder</span>
               </div>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                The blank white page on GitHub Pages occurs because Vite defaults to absolute asset URLs (<code className="text-indigo-300">/assets/...</code>) which fails when GitHub Pages serves your site from a repository subpath (<code className="text-indigo-300">username.github.io/repo-name/</code>).
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                The pre-built production files are already in the <code className="text-emerald-400 font-mono">docs/</code> directory inside your repo.
+              </p>
+              <ol className="text-[11px] text-slate-300 list-decimal list-inside space-y-1.5 mt-3 pt-2 border-t border-[#2D3139]">
+                <li>Go to GitHub &rarr; <strong>Settings &rarr; Pages</strong></li>
+                <li>Under <strong>Branch:</strong> select <strong>main</strong></li>
+                <li>Under <strong>Folder:</strong> select <strong>/docs</strong></li>
+                <li>Click <strong>Save</strong>!</li>
+              </ol>
+            </div>
+            <div className="mt-3 pt-2 border-t border-[#2D3139] text-[10px] text-emerald-400 font-medium">
+              ✓ Ready immediately &mdash; no build required on GitHub
+            </div>
+          </div>
+
+          {/* Option 2: npm run deploy */}
+          <div className="bg-[#111419] border border-indigo-500/30 rounded-xl p-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  Option 2 (CLI)
+                </span>
+                <span className="text-xs font-bold text-white">npm run deploy</span>
+              </div>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                We installed the standard <code className="text-indigo-300 font-mono">gh-pages</code> package. Run this single command in your terminal:
+              </p>
+              <div className="mt-2">
+                <pre className="bg-[#0F1115] p-2 rounded text-indigo-300 font-mono text-[11px] border border-[#2D3139] overflow-x-auto">
+npm run deploy
+                </pre>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-2">
+                This compiles Vite and pushes the clean production build to a <code className="text-indigo-300 font-mono">gh-pages</code> branch.
               </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-              <div className="bg-[#111419] p-3 rounded-lg border border-[#2D3139] text-xs space-y-1">
-                <span className="text-[11px] font-bold text-rose-400 uppercase tracking-wider block">Before (Broken)</span>
-                <code className="text-[11px] text-slate-400 block font-mono">
-                  &lt;script src=&quot;/assets/index.js&quot;&gt;
-                </code>
-                <p className="text-[11px] text-slate-500">
-                  Browser requests root path: <span className="text-rose-400">username.github.io/assets/... (404 Not Found)</span>
-                </p>
-              </div>
-
-              <div className="bg-[#111419] p-3 rounded-lg border border-[#2D3139] text-xs space-y-1">
-                <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">Now Fixed with base: &apos;./&apos;</span>
-                <code className="text-[11px] text-emerald-300 block font-mono">
-                  &lt;script src=&quot;./assets/index.js&quot;&gt;
-                </code>
-                <p className="text-[11px] text-slate-400">
-                  Browser correctly resolves inside the repository: <span className="text-emerald-400">username.github.io/repo-name/assets/... (200 OK)</span>
-                </p>
-              </div>
+            <div className="mt-3 pt-2 border-t border-[#2D3139] text-[10px] text-indigo-400 font-medium">
+              ✓ GitHub Pages detects gh-pages branch automatically
             </div>
+          </div>
 
-            <div className="pt-2">
-              <div className="text-xs font-semibold text-white mb-2">How to deploy to GitHub Pages now:</div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="bg-[#111419] p-3 rounded-lg border border-[#2D3139]">
-                  <div className="text-xs font-bold text-indigo-400 mb-1">Method 1: GitHub Actions (Recommended)</div>
-                  <ol className="text-[11px] text-slate-400 list-decimal list-inside space-y-1">
-                    <li>Go to your repo on <strong>GitHub.com</strong></li>
-                    <li>Click <strong>Settings &rarr; Pages</strong></li>
-                    <li>Under <strong>Source</strong>, select <strong>GitHub Actions</strong></li>
-                    <li>Commit and push — the created <code className="text-indigo-300 font-mono">.github/workflows/deploy.yml</code> deploys automatically!</li>
-                  </ol>
-                </div>
-
-                <div className="bg-[#111419] p-3 rounded-lg border border-[#2D3139]">
-                  <div className="text-xs font-bold text-cyan-400 mb-1">Method 2: Command Line (gh-pages)</div>
-                  <pre className="bg-[#0F1115] p-2 rounded text-emerald-400 font-mono text-[11px] border border-[#2D3139] overflow-x-auto">
-{`npm run build
-npx gh-pages -d dist`}
-                  </pre>
-                  <p className="text-[11px] text-slate-500 mt-1">
-                    Deploys the compiled relative assets directly to the gh-pages branch.
-                  </p>
-                </div>
+          {/* Option 3: GitHub Actions */}
+          <div className="bg-[#111419] border border-cyan-500/30 rounded-xl p-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  Option 3 (CI/CD)
+                </span>
+                <span className="text-xs font-bold text-white">GitHub Actions</span>
               </div>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                We included <code className="text-cyan-300 font-mono">.github/workflows/deploy.yml</code>:
+              </p>
+              <ol className="text-[11px] text-slate-300 list-decimal list-inside space-y-1.5 mt-2 pt-2 border-t border-[#2D3139]">
+                <li>Go to GitHub &rarr; <strong>Settings &rarr; Pages</strong></li>
+                <li>Under <strong>Build and deployment &rarr; Source</strong></li>
+                <li>Change dropdown to <strong>GitHub Actions</strong></li>
+                <li>Push code &mdash; builds &amp; deploys automatically</li>
+              </ol>
+            </div>
+            <div className="mt-3 pt-2 border-t border-[#2D3139] text-[10px] text-cyan-400 font-medium">
+              ✓ Auto-deploys on every git push
             </div>
           </div>
         </div>
@@ -206,7 +212,7 @@ npx gh-pages -d dist`}
         <div className="bg-[#1A1D23] border border-[#2D3139] rounded-xl p-5 shadow-sm space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-[#2D3139]">
             <Laptop className="w-5 h-5 text-indigo-400" />
-            <h3 className="text-sm font-bold text-white">Running on Windows (Local Machine)</h3>
+            <h3 className="text-sm font-bold text-white">Running Backend on Windows (Local Machine)</h3>
           </div>
 
           <div className="space-y-4">
@@ -240,7 +246,7 @@ npx gh-pages -d dist`}
         <div className="bg-[#1A1D23] border border-[#2D3139] rounded-xl p-5 shadow-sm space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-[#2D3139]">
             <Cloud className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-sm font-bold text-white">Deploying to Free Cloud (Render.com)</h3>
+            <h3 className="text-sm font-bold text-white">Deploying Backend to Free Cloud (Render.com)</h3>
           </div>
 
           <div className="space-y-4">
