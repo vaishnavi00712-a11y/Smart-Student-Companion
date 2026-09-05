@@ -9,30 +9,43 @@
     <meta property="og:description" content="Python FastAPI backend and interactive API companion for Assignment, Attendance, and Marks management." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="module" crossorigin src="./assets/index-CnuZJKA6.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BT0qgwI2.css">
+    <script type="module" crossorigin src="./assets/index.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index.css">
   </head>
   <body style="margin: 0; background-color: #0F1115;">
     <div id="root">
-      <div style="min-height: 100vh; background-color: #0F1115; color: #D1D5DB; display: flex; align-items: center; justify-content: center; font-family: system-ui, -apple-system, sans-serif; padding: 24px; box-sizing: border-box;">
-        <div style="max-width: 520px; width: 100%; background-color: #1A1D23; border: 1px solid #2D3139; border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-            <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #6366F1;"></div>
-            <h2 style="margin: 0; font-size: 16px; color: #FFFFFF; font-weight: 600;">Smart Student Companion</h2>
-          </div>
-          <p style="font-size: 13px; color: #9CA3AF; margin-bottom: 16px; line-height: 1.5;">
-            Loading application... If this message stays on screen on GitHub Pages, the compiled build folder needs to be selected in repository settings.
-          </p>
-          <div style="background: #111419; border: 1px solid #2D3139; border-radius: 8px; padding: 14px; font-size: 12px; color: #D1D5DB;">
-            <div style="font-weight: 600; color: #818CF8; margin-bottom: 6px;">How to enable GitHub Pages correctly:</div>
-            <ol style="margin: 0; padding-left: 18px; line-height: 1.6; color: #9CA3AF;">
-              <li>Open your repo on <strong>GitHub &rarr; Settings &rarr; Pages</strong></li>
-              <li>Under <em>Source</em>: select <strong>GitHub Actions</strong> (recommended)</li>
-              <li>Or set <em>Branch:</em> <strong>main</strong> and <em>Folder:</em> <strong>/docs</strong></li>
-            </ol>
-          </div>
-        </div>
+      <div style="min-height: 100vh; background-color: #0F1115; color: #D1D5DB; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, -apple-system, sans-serif; gap: 16px;">
+        <div style="width: 32px; height: 32px; border: 3px solid #2D3139; border-top-color: #6366F1; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+        <div style="font-size: 14px; font-weight: 500; color: #9CA3AF; letter-spacing: 0.02em;">Loading Smart Student Companion...</div>
+        <style>
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        </style>
       </div>
     </div>
+
+    <!-- 1. Vite Development Server (AI Studio / localhost) -->
+
+    <!-- 2. Static Production Fallback (Automatic for GitHub Pages root deployment) -->
+    <script>
+      (function() {
+        setTimeout(function() {
+          if (!window.__APP_MOUNTED__) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.crossOrigin = 'anonymous';
+            link.href = './assets/index.css';
+            document.head.appendChild(link);
+
+            var script = document.createElement('script');
+            script.type = 'module';
+            script.crossOrigin = 'anonymous';
+            script.src = './assets/index.js';
+            document.body.appendChild(script);
+          }
+        }, 100);
+      })();
+    </script>
   </body>
 </html>

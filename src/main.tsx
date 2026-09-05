@@ -11,3 +11,5 @@ createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </StrictMode>,
 );
+
+(window as unknown as { __APP_MOUNTED__: boolean }).__APP_MOUNTED__ = true;

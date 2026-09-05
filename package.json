@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && vite build --outDir docs && node -e \"const fs=require('fs'); fs.cpSync('dist/assets', 'assets', {recursive: true});\"",
     "build:docs": "vite build --outDir docs",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
